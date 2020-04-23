@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="car">
+	<!-- 전체 갯수 얻어오는 sql  -->
+	<select id="totalcountofcar" resultType="int">
+		select count(*) from cardb	<!-- ; 세미콜론은 쓰지 않는다. -->
+	</select>
+	
+	<!-- insert -->
+	<insert id="insertOfCar" parameterType="cardto">
+		insert into cardb values (seq_test.nextval,#{name},#{carname},#{carprice},#{carcolor},#{carguipday})
+	</insert>
+	
+	<!-- select-paging -->
+	<select id="selectPagingOfcar" parameterType="HashMap" resultType="cardto">
+		<![CDATA[
+		select a.* from (select ROWNUM as RNUM,b.* from
+		(select * from cardb order by num desc)b)a
+		where a.RNUM>=#{start} and a.RNUM<=#{end}
+		]]>
+	</select>
+	
+	<!-- 목록에서 이름 클릭시 내용보기 -->
+	<select id="selectByNumOfCar" parameterType="String" resultType="cardto">
+		select * from cardb where num=#{num}
+	</select>
+</mapper>
