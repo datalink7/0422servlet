@@ -44,6 +44,4 @@ public class MyCarDto {
 	public void setCarguipday(String carguipday) {
 		this.carguipday = carguipday;
 	}
-	
-	
 }

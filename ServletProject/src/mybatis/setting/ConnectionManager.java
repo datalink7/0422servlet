@@ -10,35 +10,34 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class ConnectionManager
 {
- private static ConnectionManager instance;
- 
- public static ConnectionManager getInstance()
- {
-  if(instance == null)
-   instance = new ConnectionManager();
-  return instance;
- }
- 
- private SqlSessionFactory sqlSessionFactory;
- 
- private ConnectionManager()
- {
-	 //mysql ì„¸íŒ…í•œ íŒŒì¼ ìœ„ì¹˜ ì§€ì •
-  String resource = "mybatis/setting/SqlMapConfig.xml";
-  try
-  {
-   Reader reader = Resources.getResourceAsReader(resource);
-   sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-  }
-  catch (IOException e)
-  {
-   e.printStackTrace();
-  }
- }
- 
- public SqlSession openSession()
- {
-  return sqlSessionFactory.openSession(true);
- }
-}
+	private static ConnectionManager instance;
 
+	public static ConnectionManager getInstance()
+	{
+		if(instance == null)
+			instance = new ConnectionManager();
+		return instance;
+	}
+
+	private SqlSessionFactory sqlSessionFactory;
+
+	private ConnectionManager()
+	{
+		//mysql ¼¼ÆÃÇÑ ÆÄÀÏÀÇ À§Ä¡ ÁöÁ¤
+		String resource = "mybatis/setting/SqlMapConfig.xml";
+		try
+		{
+			Reader reader = Resources.getResourceAsReader(resource);
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public SqlSession openSession()
+	{
+		return sqlSessionFactory.openSession(true);
+	}
+}

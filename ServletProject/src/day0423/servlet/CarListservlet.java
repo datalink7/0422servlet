@@ -20,14 +20,14 @@ import mybatis.setting.MyCarDto;
 public class CarListservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
  
-	//dao ì„ ì–¸
+	//dao ¼±¾ğ
 	MyCarDao dao=new MyCarDao();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int totalCount=dao.getTotalCount();
 		
-		//í˜„ì¬ í˜ì´ì§€ ì½ê¸°
+		//ÇöÀç ÆäÀÌÁö ÀĞ±â
 		String pageNum="";
 		int currentPage=0;
 		
@@ -38,58 +38,58 @@ public class CarListservlet extends HttpServlet {
 			currentPage=Integer.parseInt(pageNum);
 		
 		
-		//í˜ì´ì§• ë³€ìˆ˜ ì¶”ê°€
-		int perPage=5; //í•œí˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ê°¯ìˆ˜
-		int perBlock=5; //í•œë¸”ëŸ­ë‹¹ ë³´ì—¬ì§ˆ í˜ì´ì§€ ê°¯ìˆ˜
-		int totalPage;//ì´ í˜ì´ì§€ìˆ˜
-		int startPage;//ê°ë¸”ëŸ­ë‹¹ ë³´ì—¬ì§ˆ ì‹œì‘ í˜ì´ì§€
-		int endPage;//ê°ë¸”ëŸ­ë‹¹ ë³´ì—¬ì§ˆ ë í˜ì´ì§€
-		int start;//ê° í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ì‹œì‘ ê¸€ë²ˆí˜¸(ì˜¤ë¼í´ì€1ë¶€í„°,mysqlì€0ë¶€í„°)
-		int end;//ê° í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ë ê¸€ë²ˆí˜¸
+		//ÆäÀÌÂ¡ º¯¼ö Ãß°¡
+		int perPage=5; //ÇÑÆäÀÌÁö´ç º¸¿©Áú °¹¼ö
+		int perBlock=5; //ÇÑºí·°´ç º¸¿©Áú ÆäÀÌÁö °¹¼ö
+		int totalPage;//ÃÑ ÆäÀÌÁö¼ö
+		int startPage;//°¢ºí·°´ç º¸¿©Áú ½ÃÀÛ ÆäÀÌÁö
+		int endPage;//°¢ºí·°´ç º¸¿©Áú ³¡ ÆäÀÌÁö
+		int start;//°¢ ÆäÀÌÁö´ç º¸¿©Áú ½ÃÀÛ ±Û¹øÈ£(¿À¶óÅ¬Àº1ºÎÅÍ,mysqlÀº0ºÎÅÍ)
+		int end;//°¢ ÆäÀÌÁö´ç º¸¿©Áú ³¡ ±Û¹øÈ£
 		List<MyCarDto> list=null;
 		
-		//ì´ í˜ì´ì§€ ê°¯ìˆ˜
+		//ÃÑ ÆäÀÌÁö °¹¼ö
 		totalPage=totalCount/perPage+(totalCount%perPage>0?1:0);
 		
-		//ë§ˆì§€ë§‰ í˜ì´ì§€ì— ë‚¨ì€ ê¸€ í•œê°œë¥¼ ì‚­ì œì‹œ 
-		//ê·¸ ì „í˜ì´ì§€ë¡œ ê°€ì•¼í•˜ëŠ” ê²½ìš°ê°€ ìƒê¸´ë‹¤
+		//¸¶Áö¸· ÆäÀÌÁö¿¡ ³²Àº ±Û ÇÑ°³¸¦ »èÁ¦½Ã 
+		//±× ÀüÆäÀÌÁö·Î °¡¾ßÇÏ´Â °æ¿ì°¡ »ı±ä´Ù
 		if(currentPage>totalPage)
 			currentPage=totalPage;
 		
-		//ì‹œì‘í˜ì´ì§€(1~5í˜ì´ì§€ëŠ” 1, 6~10 í˜ì´ì§€ëŠ” 6....)
+		//½ÃÀÛÆäÀÌÁö(1~5ÆäÀÌÁö´Â 1, 6~10 ÆäÀÌÁö´Â 6....)
 		startPage=(currentPage-1)/perBlock*perBlock+1;
 		
-		//ëí˜ì´ì§€
+		//³¡ÆäÀÌÁö
 		endPage=startPage+perBlock-1;
 		
-		//endPageëŠ” totalPageë³´ë‹¤ í¬ë©´ ì•ˆë¨
+		//endPage´Â totalPageº¸´Ù Å©¸é ¾ÈµÊ
 		if(endPage>totalPage)
 			endPage=totalPage;
 		
-		//ê°í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ì‹œì‘ë²ˆí˜¸(1í˜ì´ì§€ëŠ” 1,2í˜ì´ì§€ëŠ” 4,...)
+		//°¢ÆäÀÌÁö´ç º¸¿©Áú ½ÃÀÛ¹øÈ£(1ÆäÀÌÁö´Â 1,2ÆäÀÌÁö´Â 4,...)
 		start=(currentPage-1)*perPage+1;
-		//ëë²ˆí˜¸
+		//³¡¹øÈ£
 		end=start+perPage-1;
-		//ë§ˆì§€ë§‰ í˜ì´ì§€ëŠ” ë‚¨ì€ ë°ì´íƒ€ ê°¯ìˆ˜ë§Œí¼ë§Œ
+		//¸¶Áö¸· ÆäÀÌÁö´Â ³²Àº µ¥ÀÌÅ¸ °¹¼ö¸¸Å­¸¸
 		if(end>totalCount)
 			end=totalCount;
-		//í•„ìš”í•œ ê°¯ìˆ˜ë§Œí¼ë§Œ ë°ì´íƒ€ ê°€ì ¸ì˜¤ê¸°
+		//ÇÊ¿äÇÑ °¹¼ö¸¸Å­¸¸ µ¥ÀÌÅ¸ °¡Á®¿À±â
 		list=dao.getList(start, end);
 		
-		//no ê³„ì‚°-ì´ 20ê°œì¼ê²½ìš° 1í˜ì´ì§€ëŠ” 20ë²ˆë¶€í„°, 
-		//2í˜ì´ì§€ëŠ” 15ë²ˆë¶€í„°..
+		//no °è»ê-ÃÑ 20°³ÀÏ°æ¿ì 1ÆäÀÌÁö´Â 20¹øºÎÅÍ, 
+		//2ÆäÀÌÁö´Â 15¹øºÎÅÍ..
 		int no=totalCount-(currentPage-1)*perPage;
 		
-		//requestì— ì €ì¥
+		//request¿¡ ÀúÀå
 		request.setAttribute("totalCount",totalCount);
 		request.setAttribute("list",list);
 		request.setAttribute("startPage",startPage);
 		request.setAttribute("endPage",endPage);
-		request.setAttribute("currentPage",currentPage);
 		request.setAttribute("totalPage",totalPage);
+		request.setAttribute("currentPage",currentPage);		
 		request.setAttribute("no",no);
 		
-		//í¬ì›Œë“œ
+		//Æ÷¿öµå
 		RequestDispatcher rd=
 				request.getRequestDispatcher("../day0423/carlist.jsp");
 		rd.forward(request, response);
@@ -99,3 +99,6 @@ public class CarListservlet extends HttpServlet {
 		doGet(request, response);
 	}
 }
+
+
+

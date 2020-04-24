@@ -15,7 +15,31 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<script type="text/javascript">
+$(function(){
+	$("#del").click(function(){
+		var num=$(this).attr("num");
+		var pageNum=$(this).attr("pageNum");
+		
+		swal({
+			  title: "삭제확인",
+			  text: "삭제하려면 [OK]를 눌러주세요.",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {	//ok code
+			    location.href="delete?num="+num+"&pageNum="+pageNum;
+			  } else {
+			    swal("Your imaginary file is safe!");
+			  }
+			});
+	});
+});
+</script>
 </head>
 <body>
 <div style="margin-left: 200px;width: 400px;">
@@ -41,7 +65,7 @@
 			<td>
 				<div 
 				style="width: 70px;height: 70px;background-color: ${dto.carcolor};"></div>
-				&nbsp;&nbsp;&nbsp;
+			
 				${dto.carcolor}
 			</td>
 		</tr>
@@ -58,20 +82,44 @@
 				style="width: 80px;">고객추가</button>
 				
 				<button type="button" class="btn btn-sm btn-info"
-				onclick="location.href=''"
+				onclick="location.href='updateform?num=${dto.num}&pageNum=${pageNum}'"
 				style="width: 80px;">수정</button>
 				
+				<%-- <button type="button" class="btn btn-sm btn-info"
+				onclick="location.href='location.href='detele?num=${dto.num}&pageNum=${pageNum }'"
+				style="width: 80px;">삭제</button> --%>
+				
 				<button type="button" class="btn btn-sm btn-info"
-				onclick="location.href=''"
-				style="width: 80px;">삭제</button>
+				num=${dto.num } pageNum=${pageNum }
+				style="width: 80px;" id="del">삭제</button>
 				
 				<button type="button" class="btn btn-sm btn-info"
 				onclick="location.href='list?pageNum=${pageNum}'"
 				style="width: 80px;">목록</button>
-				
+				<!--  -->
 			</td>
 		</tr>
 	</table>
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

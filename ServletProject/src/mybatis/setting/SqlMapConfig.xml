@@ -20,3 +20,11 @@
   <mapper resource="mybatis/setting/CarSql.xml"/>
  </mappers>
 </configuration>
+
+
+
+
+
+
+
+
